@@ -1,33 +1,33 @@
 class Film < Product
-  attr_accessor :name, :director, :year
+  attr_accessor :title, :director, :year
 
   def self.from_file(file_path)
     lines = File.readlines(file_path, chomp: true)
 
     self.new(
-      name: lines[0],
+      title: lines[0],
       director: lines[1],
       year: lines[2],
-      price: lines[3],
-      amount: lines[4]
+      price: lines[3].to_i,
+      amount: lines[4].to_i
     )
   end
 
   def initialize(params)
     super
 
-    @name = params[:name]
+    @title = params[:title]
     @director = params[:director]
     @year = params[:year]
   end
 
   def to_s
-    "Фильм «#{@name}», #{@year}, режиссёр - #{@director}, #{super}"
+    "Фильм «#{@title}», #{@year}, режиссёр - #{@director}, #{super}"
   end
 
   def update(params)
     super
-    @name = params[:name] if params[:name]
+    @title = params[:title] if params[:title]
     @director = params[:director] if params[:director]
     @year = params[:year] if params[:year]
   end
