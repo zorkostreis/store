@@ -25,10 +25,6 @@ class ProductCollection
     @products = products
   end
 
-  def to_a
-    @products
-  end
-
   def sort!(params)
     case params[:by]
     when :title
