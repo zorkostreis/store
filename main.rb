@@ -1,7 +1,19 @@
-require_relative 'lib/product'
-require_relative 'lib/film'
-require_relative 'lib/book'
+require_relative "lib/product"
+require_relative "lib/film"
+require_relative "lib/book"
 
-leon = Film.new(price: 290, amount: 4)
+film_paths = Dir["#{__dir__}/data/films/*.txt"]
+book_paths = Dir["#{__dir__}/data/books/*.txt"]
 
-puts leon.price
+films =
+  film_paths.map do |film_path|
+    Film.from_file(film_path)
+  end
+
+books =
+  book_paths.map do |book_path|
+    Book.from_file(book_path)
+  end
+
+films.each { |film| puts film }
+books.each { |book| puts book }
