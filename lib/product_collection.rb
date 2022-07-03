@@ -48,14 +48,7 @@ class ProductCollection
   end
 
   def sort!(params)
-    case params[:by]
-    when :title
-      @products.sort_by! { |product| product.title }
-    when :price
-      @products.sort_by! { |product| product.price }
-    when :amount
-      @products.sort_by! { |product| product.amount }
-    end
+    @products.sort_by!(&params[:by])
 
     @products.reverse! if params[:order] == :dec
 
