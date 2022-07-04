@@ -1,46 +1,49 @@
-require_relative "lib/product"
-require_relative "lib/film"
-require_relative "lib/book"
-require_relative "lib/disk"
+require_relative "lib/cart"
 require_relative "lib/product_collection"
 
 path_to_data = "#{__dir__}/data"
 
 collection = ProductCollection.from_dir(path_to_data)
+cart = Cart.new
 
 puts "Добро пожаловать в наш магазин!"
-puts
 
-chosen_product_indices = []
 user_choice = -1
-sum = 0
 
 until user_choice.zero?
-  if user_choice.between?(1, collection.size) && collection.product_amount_by_index(user_choice - 1).positive?
-    collection.product_by_index(user_choice - 1).amount -= 1
-    sum += collection.product_price_by_index(user_choice - 1)
+  if user_choice.between?(1, collection.size)
+    chosen_product = collection.product_by_index(user_choice - 1)
 
-    chosen_product_indices << user_choice - 1
+    chosen_product.amount -= 1
+    cart << chosen_product
 
-    puts "Вы выбрали: #{collection.product_by_index(user_choice - 1)}"
-    puts "Всего товаров на сумму: #{sum} руб."
-    puts
+    puts <<~USER_CHOICE
+
+      Вы выбрали: #{chosen_product}
+      Всего товаров на сумму: #{cart.sum} руб.
+
+    USER_CHOICE
+
+    collection.update!
   end
 
-  puts "Что хотите купить?"
+  puts <<~COLLECTION
 
-  puts collection
-  puts "\t0. Выход"
+    Что хотите купить?
 
+    #{collection}
+    0. Выход
+
+  COLLECTION
+
+  print "Введите число: "
   user_choice = gets.to_i
 end
 
-puts
-puts "Вы купили:"
+puts <<~CART_TOTAL
 
-chosen_product_indices.each do |index|
-  puts collection.product_by_index(index)
-end
+  Вы купили:
+  #{cart}
 
-puts
-puts "С Вас — #{sum} руб. Спасибо за покупку!"
+  С Вас — #{cart.sum} руб. Спасибо за покупку!
+CART_TOTAL

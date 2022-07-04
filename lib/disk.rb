@@ -1,3 +1,5 @@
+require_relative "product"
+
 class Disk < Product
   attr_accessor :title, :singer, :genre, :year
 

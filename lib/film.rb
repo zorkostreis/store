@@ -1,3 +1,5 @@
+require_relative "product"
+
 class Film < Product
   attr_accessor :title, :director, :year
 
@@ -27,6 +29,7 @@ class Film < Product
 
   def update(params)
     super
+
     @title = params[:title] if params[:title]
     @director = params[:director] if params[:director]
     @year = params[:year] if params[:year]

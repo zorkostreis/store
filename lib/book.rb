@@ -1,3 +1,5 @@
+require_relative "product"
+
 class Book < Product
   attr_accessor :title, :genre, :author
 

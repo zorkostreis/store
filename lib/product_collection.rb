@@ -1,3 +1,7 @@
+require_relative "film"
+require_relative "book"
+require_relative "disk"
+
 class ProductCollection
   attr_accessor :products
 
@@ -25,10 +29,10 @@ class ProductCollection
     @products = products
   end
 
-  def to_ary
-    @products.map.with_index(1) do |product, indx|
-      "\t#{indx}. #{product}"
-    end
+  def to_s
+    @products
+      .map.with_index(1) { |product, indx| "#{indx}. #{product}" }
+      .join("\n")
   end
 
   def size
@@ -39,18 +43,16 @@ class ProductCollection
     @products[index]
   end
 
-  def product_amount_by_index(index)
-    @products[index].amount
-  end
-
-  def product_price_by_index(index)
-    @products[index].price
-  end
-
   def sort!(params)
     @products.sort_by!(&params[:by])
 
     @products.reverse! if params[:order] == :dec
+
+    self
+  end
+
+  def update!
+    @products.select! { |product| product.amount.positive? }
 
     self
   end
